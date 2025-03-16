@@ -2,7 +2,7 @@
 
 import type React from 'react'
 
-import { useState } from 'react'
+import { useState, useContext } from 'react'
 import {
   AppBar,
   Toolbar,
@@ -16,10 +16,8 @@ import {
   Tab,
   Paper,
   IconButton,
-  useTheme,
 } from '@mui/material'
 import {
-  Code as CodeIcon,
   Bolt as BoltIcon,
   Build as BuildIcon,
   Speed as SpeedIcon,
@@ -28,71 +26,16 @@ import {
   DarkMode as DarkModeIcon,
 } from '@mui/icons-material'
 import useStore from './store/useStore'
-
-// Sample code snippets
-const zustandExample = `// store.ts
-import { create } from 'zustand'
-
-interface CounterState {
-  count: number
-  increment: () => void
-  decrement: () => void
-}
-
-const useStore = create<CounterState>((set) => ({
-  count: 0,
-  increment: () => set((state) => ({ count: state.count + 1 })),
-  decrement: () => set((state) => ({ count: state.count - 1 })),
-}))
-
-export default useStore`
-
-const reactQueryExample = `// Example.tsx
-import { useQuery } from '@tanstack/react-query'
-
-function TodoList() {
-  const { isLoading, error, data } = useQuery({
-    queryKey: ['todos'],
-    queryFn: () => fetch('https://api.example.com/todos').then(res => res.json())
-  })
-
-  if (isLoading) return <div>Loading...</div>
-  if (error) return <div>Error: {error.message}</div>
-
-  return (
-    <ul>
-      {data.map(todo => (
-        <li key={todo.id}>{todo.title}</li>
-      ))}
-    </ul>
-  )
-}`
-
-interface TabPanelProps {
-  children?: React.ReactNode
-  index: number
-  value: number
-}
-
-function TabPanel(props: TabPanelProps) {
-  const { children, value, index, ...other } = props
-
-  return (
-    <div
-      role="tabpanel"
-      hidden={value !== index}
-      id={`simple-tabpanel-${index}`}
-      aria-labelledby={`simple-tab-${index}`}
-      {...other}
-    >
-      {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
-    </div>
-  )
-}
+import {
+  REACT_QUERY_EXAMPLE,
+  technologies,
+  ZUSTAND_EXAMPLE,
+} from './components/TabPanel/utils/tabPanelConstants'
+import TabPanel from './components/TabPanel/TabPanel'
+import { ThemeContext } from './theme/ThemeContext'
 
 function App() {
-  const theme = useTheme()
-  const [darkMode, setDarkMode] = useState(theme.palette.mode === 'dark')
+  const { mode, toggleColorMode } = useContext(ThemeContext)
   const [tabValue, setTabValue] = useState(0)
   const { count, increase, decrease } = useStore()
 
@@ -100,42 +43,27 @@ function App() {
     setTabValue(newValue)
   }
 
-  const toggleDarkMode = () => {
-    setDarkMode(!darkMode)
-    // In a real app, you would toggle the theme here
-  }
-
-  const technologies = [
-    { name: 'Vite', description: 'Lightning fast build tool' },
-    { name: 'React', description: 'UI component library' },
-    { name: 'TypeScript', description: 'Type-safe JavaScript' },
-    { name: 'TailwindCSS', description: 'Utility-first CSS framework' },
-    { name: 'MUI', description: 'Material Design components' },
-    { name: 'ESLint', description: 'Code linting' },
-    { name: 'Prettier', description: 'Code formatting' },
-    { name: 'Husky', description: 'Git hooks' },
-    { name: 'Zustand', description: 'State management' },
-    { name: 'React Query', description: 'Data fetching' },
-    { name: 'Jest', description: 'Testing framework' },
-    { name: 'React Testing Library', description: 'Component testing' },
-  ]
-
   return (
-    <Box className="min-h-screen bg-gray-50 dark:bg-gray-900">
+    <Box className="min-h-screen" sx={{ bgcolor: 'background.default', color: 'text.primary' }}>
       <AppBar position="static" color="primary">
         <Toolbar className="justify-between">
-          <Typography variant="h6" component="div" className="flex items-center">
-            <CodeIcon className="mr-2" />
-            React Boilerplate
-          </Typography>
+          <div className="flex items-center justify-between w-60">
+            <Typography variant="h6" component="div">
+              {'{ React - Vite }'}
+            </Typography>
+            <Typography variant="h6" component="div">
+              Boilerplate
+            </Typography>
+          </div>
           <div>
-            <IconButton color="inherit" onClick={toggleDarkMode}>
-              {darkMode ? <LightModeIcon /> : <DarkModeIcon />}
+            <IconButton color="inherit" onClick={toggleColorMode}>
+              {mode === 'dark' ? <LightModeIcon /> : <DarkModeIcon />}
             </IconButton>
             <IconButton
               color="inherit"
-              href="https://github.com/yourusername/your-repo"
+              href="https://github.com/NandoLT/reactProKit_vite"
               target="_blank"
+              rel="noopener noreferrer"
             >
               <GitHubIcon />
             </IconButton>
@@ -143,7 +71,6 @@ function App() {
         </Toolbar>
       </AppBar>
 
-      {/* Hero Section */}
       <Container className="py-16">
         <Box className="text-center mb-16">
           <Typography variant="h2" component="h1" className="font-bold mb-4">
@@ -228,12 +155,12 @@ function App() {
             </Tabs>
             <TabPanel value={tabValue} index={0}>
               <pre className="bg-gray-100 dark:bg-gray-800 p-4 rounded overflow-auto text-sm">
-                <code>{zustandExample}</code>
+                <code>{ZUSTAND_EXAMPLE}</code>
               </pre>
             </TabPanel>
             <TabPanel value={tabValue} index={1}>
               <pre className="bg-gray-100 dark:bg-gray-800 p-4 rounded overflow-auto text-sm">
-                <code>{reactQueryExample}</code>
+                <code>{REACT_QUERY_EXAMPLE}</code>
               </pre>
             </TabPanel>
           </Paper>
