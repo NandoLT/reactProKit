@@ -1,4 +1,4 @@
-# React Pro Kit 🚀
+# React Pro Kit - Vite
 
 A modern and powerful React boilerplate with a comprehensive set of features and best practices for building scalable applications.
 
@@ -28,10 +28,10 @@ A modern and powerful React boilerplate with a comprehensive set of features and
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/reactprokit.git
+git clone https://github.com/yourusername/reactprokit_vite.git
 
 # Navigate to the project directory
-cd reactprokit
+cd reactprokit_vite
 
 # Install dependencies
 pnpm install
